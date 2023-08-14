@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from .models import Board  # Assuming models.py is in the same package
-from .chess_logic import initialize_board  # Assuming chess_logic.py is in the same package
+from models import Board  # Assuming models.py is in the same package
+from chess_logic import initialize_board  # Assuming chess_logic.py is in the same package
 
 app = FastAPI()
 
