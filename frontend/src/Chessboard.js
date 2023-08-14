@@ -8,7 +8,7 @@ function Chessboard() {
 
   useEffect(() => {
     // Fetch the initial board from the server
-    axios.get("/board")
+    axios.get('http://127.0.0.1:8000/board')
       .then(response => {
         setBoard(response.data.squares);
       })
