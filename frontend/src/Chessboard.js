@@ -2,9 +2,34 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Assuming you are using axios for HTTP requests
 import whitePawn from './assets/pieces/whitePawn.svg';
 import blackPawn from './assets/pieces/blackPawn.svg';
+import whiteKing from './assets/pieces/whiteKing.svg';
+import blackKing from './assets/pieces/blackKing.svg';
+import whiteQueen from './assets/pieces/whiteQueen.svg';
+import blackQueen from './assets/pieces/blackQueen.svg';
+import whiteRook from './assets/pieces/whiteRook.svg';
+import blackRook from './assets/pieces/blackRook.svg';
+import whiteBishop from './assets/pieces/whiteBishop.svg';
+import blackBishop from './assets/pieces/blackBishop.svg';
+import whiteKnight from './assets/pieces/whiteKnight.svg';
+import blackKnight from './assets/pieces/blackKnight.svg';
 
 function Chessboard() {
   const [board, setBoard] = useState(null);
+  const getPieceImage = (piece) => {
+    if (!piece) return null;
+    if (piece.type === 'P' && piece.color === 'white') return whitePawn;
+    if (piece.type === 'p' && piece.color === 'black') return blackPawn;
+    if (piece.type === 'K' && piece.color === 'white') return whiteKing;
+    if (piece.type === 'k' && piece.color === 'black') return blackKing;
+    if (piece.type === 'Q' && piece.color === 'white') return whiteQueen;
+    if (piece.type === 'q' && piece.color === 'black') return blackQueen;
+    if (piece.type === 'R' && piece.color === 'white') return whiteRook;
+    if (piece.type === 'r' && piece.color === 'black') return blackRook;
+    if (piece.type === 'B' && piece.color === 'white') return whiteBishop;
+    if (piece.type === 'b' && piece.color === 'black') return blackBishop;
+    if (piece.type === 'N' && piece.color === 'white') return whiteKnight;
+    if (piece.type === 'n' && piece.color === 'black') return blackKnight;
+  };
 
   useEffect(() => {
     // Fetch the initial board from the server
@@ -16,14 +41,6 @@ function Chessboard() {
         console.error("An error occurred while fetching the board data:", error);
       });
   }, []);
-
-  // Function to get the SVG for a piece
-  const getPieceImage = (piece) => {
-    if (!piece) return null;
-    if (piece.type === 'P' && piece.color === 'white') return whitePawn;
-    if (piece.type === 'P' && piece.color === 'black') return blackPawn;
-    // Add other piece types here...
-  };
 
   // Generate the grid
   const squares = [];
@@ -56,5 +73,3 @@ function Chessboard() {
 }
 
 export default Chessboard;
-
-
