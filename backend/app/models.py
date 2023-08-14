@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -7,4 +7,5 @@ class Piece(BaseModel):
     color: str  # "white" or "black"
 
 class Board(BaseModel):
-    squares: List[List[Piece]]  # 8x8 grid representing the chessboard
+    squares: List[List[Optional[Piece]]]  # 8x8 grid representing the chessboard
+
