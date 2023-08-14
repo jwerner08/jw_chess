@@ -1,5 +1,5 @@
 # backend/app/chess_logic.py
-from .models import Piece, Board
+from models import Piece, Board
 
 def initialize_board() -> Board:
     initial_pieces = [
