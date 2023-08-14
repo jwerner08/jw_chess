@@ -1,4 +1,6 @@
 import React from 'react';
+import whitePawn from './assets/pieces/whitePawn.svg';
+import blackPawn from './assets/pieces/blackPawn.svg';
 
 function Chessboard() {
   const rows = 8;
