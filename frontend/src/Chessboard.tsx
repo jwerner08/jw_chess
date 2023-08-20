@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Assuming you are using axios for HTTP requests
+import React, { useEffect, useState, ReactElement, ReactNode } from 'react';
+import axios from 'axios';
 import whitePawn from './assets/pieces/whitePawn.svg';
 import blackPawn from './assets/pieces/blackPawn.svg';
 import whiteKing from './assets/pieces/whiteKing.svg';
@@ -13,9 +13,15 @@ import blackBishop from './assets/pieces/blackBishop.svg';
 import whiteKnight from './assets/pieces/whiteKnight.svg';
 import blackKnight from './assets/pieces/blackKnight.svg';
 
-function Chessboard() {
-  const [board, setBoard] = useState(null);
-  const getPieceImage = (piece) => {
+type PieceType = 'P' | 'p' | 'K' | 'k' | 'Q' | 'q' | 'R' | 'r' | 'B' | 'b' | 'N' | 'n';
+interface Piece {
+  type: PieceType;
+  color: 'white' | 'black';
+}
+
+function Chessboard(): ReactElement {
+  const [board, setBoard] = useState<Piece[][] | null>(null);
+  const getPieceImage = (piece: Piece | null): string | null => {
     if (!piece) return null;
     if (piece.type === 'P' && piece.color === 'white') return whitePawn;
     if (piece.type === 'p' && piece.color === 'black') return blackPawn;
@@ -29,6 +35,7 @@ function Chessboard() {
     if (piece.type === 'b' && piece.color === 'black') return blackBishop;
     if (piece.type === 'N' && piece.color === 'white') return whiteKnight;
     if (piece.type === 'n' && piece.color === 'black') return blackKnight;
+    return null;
   };
 
   useEffect(() => {
@@ -43,7 +50,7 @@ function Chessboard() {
   }, []);
 
   // Generate the grid
-  const squares = [];
+  const squares: ReactNode[] = [];
   if (board) {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
@@ -64,9 +71,9 @@ function Chessboard() {
   }
 
   return (
-      <div className="display-inline items-center grid grid-cols-8">
-        {squares}
-      </div>
+    <div className="display-inline items-center grid grid-cols-8">
+      {squares}
+    </div>
   );
 }
 
