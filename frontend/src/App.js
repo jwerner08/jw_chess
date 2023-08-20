@@ -1,10 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
 import Chessboard from './Chessboard';
 
 function App() {
   return (
-    <div className="App">
+    <div className="flex justify-center items-center min-h-screen bg-grey">
       <Chessboard />
     </div>
   );
