@@ -14,13 +14,15 @@ import whiteKnight from './assets/pieces/whiteKnight.svg';
 import blackKnight from './assets/pieces/blackKnight.svg';
 
 type PieceType = 'P' | 'p' | 'K' | 'k' | 'Q' | 'q' | 'R' | 'r' | 'B' | 'b' | 'N' | 'n';
+type BoardType = (Piece | null)[][];
 interface Piece {
   type: PieceType;
   color: 'white' | 'black';
 }
 
 function Chessboard(): ReactElement {
-  const [board, setBoard] = useState<Piece[][] | null>(null);
+  const [board, setBoard] = useState<BoardType | null>(null);
+  const [selectedPiece, setSelectedPiece] = useState<{ piece: Piece, x: number, y: number } | null>(null);
   const getPieceImage = (piece: Piece | null): string | null => {
     if (!piece) return null;
     if (piece.type === 'P' && piece.color === 'white') return whitePawn;
@@ -37,6 +39,40 @@ function Chessboard(): ReactElement {
     if (piece.type === 'n' && piece.color === 'black') return blackKnight;
     return null;
   };
+
+  const handleSquareClick = (x: number, y: number) => {
+    if (board) {
+      const piece = board[x][y];
+      if (selectedPiece) {
+        if (piece) {
+          // If there is already a selected piece and a new piece is clicked, select the new piece
+          setSelectedPiece({ piece, x, y });
+          console.log('Piece selected:', { piece, x, y }); // Log the selected piece information
+        } else {
+          // Move the selected piece if an empty square is clicked
+          const from = { x: selectedPiece.x, y: selectedPiece.y };
+          const to = { x, y };
+  
+          // Create a copy of the board
+          const newBoard = board.map(row => row.slice());
+  
+          // Move the piece
+          newBoard[from.x][from.y] = null;
+          newBoard[to.x][to.y] = selectedPiece.piece;
+  
+          // Update the board state
+          setBoard(newBoard);
+  
+          // Deselect the piece
+          setSelectedPiece(null);
+        }
+      } else if (piece) {
+        // If no piece is selected and a piece is clicked, select it
+        setSelectedPiece({ piece, x, y });
+        console.log('Piece selected:', { piece, x, y }); // Log the selected piece information
+      }
+    }
+  };    
 
   useEffect(() => {
     // Fetch the initial board from the server
@@ -57,12 +93,16 @@ function Chessboard(): ReactElement {
         const isDarkSquare = (i + j) % 2 !== 0;
         const squareClass = isDarkSquare ? 'bg-black' : 'bg-white';
 
+        // Check if this square contains the selected piece
+        const isSelected = selectedPiece && selectedPiece.x === i && selectedPiece.y === j;
+        const selectedClass = isSelected ? 'border-2 border-red-500' : '';
+
         // Add the piece image if there is a piece on this square
         const pieceImage = getPieceImage(board[i][j]);
-        const pieceElement = pieceImage ? <img className={`w-full h-full`} src={pieceImage} alt="" /> : null;
+        const pieceElement = pieceImage ? <img className={`w-full h-full ${selectedClass}`} src={pieceImage} alt="" /> : null;
 
         squares.push(
-          <div key={`${i}-${j}`} className={`w-16 h-16 ${squareClass}`}>
+          <div key={`${i}-${j}`} className={`w-16 h-16 ${squareClass} ${selectedClass}`} onClick={() => handleSquareClick(i, j)}>
             {pieceElement}
           </div>
         );
